@@ -1,0 +1,1360 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You 💝</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fad0c4 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .page {
+            display: none;
+            min-height: 100vh;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.show {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Envelope Page */
+        .envelope-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            z-index: 100;
+        }
+
+        .envelope-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            animation: floatEnvelope 3s ease infinite;
+        }
+
+        .envelope-container:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes floatEnvelope {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .envelope {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            border-radius: 0 0 10px 10px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(135deg, #a93226, #c0392b);
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            z-index: 2;
+        }
+
+        .envelope-container.open .envelope-flap {
+            transform: rotateX(180deg);
+        }
+
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #922b21, #c0392b);
+            clip-path: polygon(0 100%, 0 50%, 50% 100%, 100% 50%, 100% 100%);
+            z-index: 1;
+        }
+
+        .letter-preview {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            height: 80%;
+            background: white;
+            border-radius: 5px;
+            z-index: 0;
+            transition: all 0.6s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+
+        .envelope-container.open .letter-preview {
+            bottom: -20px;
+            height: 120%;
+            z-index: 3;
+        }
+
+        .for-you {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #c0392b;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: pulse 2s ease infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
+        }
+
+        .click-hint {
+            margin-top: 40px;
+            color: #666;
+            font-size: 1.2em;
+            animation: fadeInOut 2s ease infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Question Page */
+        .gif-container {
+            width: 300px;
+            height: 300px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: white;
+        }
+
+        .main-text {
+            color: #e74c3c;
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+            min-height: 50px;
+        }
+
+        .button-box {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            min-height: 100px;
+            position: relative;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        button {
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-family: 'Georgia', serif;
+        }
+
+        #yesBtn {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+        }
+
+        #yesBtn:hover {
+            background: #ff5252;
+        }
+
+        #noBtn {
+            background: #ecf0f1;
+            color: #7f8c8d;
+            padding: 12px 30px;
+            font-size: 1em;
+            border: 2px solid #bdc3c7;
+            position: relative;
+            min-width: 140px;
+            transition: all 0.3s ease;
+        }
+
+        .yes-size-1 { transform: scale(1.3); }
+        .yes-size-2 { transform: scale(1.6); padding: 18px 50px; font-size: 1.5em; }
+        .yes-size-3 { transform: scale(2); padding: 22px 60px; font-size: 1.8em; }
+        .yes-size-4 { transform: scale(2.5); padding: 25px 70px; font-size: 2.2em; }
+        .yes-size-5 { transform: scale(3.5); padding: 30px 90px; font-size: 3em; }
+        .yes-size-6 { transform: scale(5); padding: 40px 120px; font-size: 4em; }
+        .yes-size-7 { 
+            transform: scale(8); 
+            padding: 50px 150px; 
+            font-size: 6em;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -75px;
+            margin-left: -150px;
+            z-index: 100;
+            animation: pulseBtn 1s infinite;
+        }
+
+        @keyframes pulseBtn {
+            0%, 100% { transform: scale(8); }
+            50% { transform: scale(8.5); }
+        }
+
+        /* Success Page */
+        .gift-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+            animation: bounce 1s ease infinite;
+            margin-top: 20px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .gift-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Gift Selection */
+        .gift-selection {
+            text-align: center;
+        }
+
+        .gift-selection h2 {
+            color: #e74c3c;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+        }
+
+        .gifts-row {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .gift-envelope {
+            width: 200px;
+            height: 140px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gift-envelope:hover {
+            transform: scale(1.1) translateY(-10px);
+        }
+
+        .gift-env-body {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            border-radius: 0 0 10px 10px;
+            position: relative;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .gift-env-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(135deg, #ff5252, #ff6b6b);
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            z-index: 2;
+        }
+
+        .gift-label {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #e74c3c;
+            font-size: 1.3em;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .gift-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            z-index: 3;
+        }
+
+        /* QUIZ STYLES */
+        .quiz-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .quiz-header {
+            color: #e74c3c;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .quiz-progress {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        .question-box {
+            margin-bottom: 30px;
+        }
+
+        .question-text {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .quiz-option {
+            padding: 18px 25px;
+            background: #f8f9fa;
+            border: 3px solid #e9ecef;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            text-align: left;
+            position: relative;
+        }
+
+        .quiz-option:hover:not(.disabled):not(.wrong) {
+            background: #ffeaa7;
+            border-color: #fdcb6e;
+            transform: translateX(10px);
+        }
+
+        .quiz-option.correct {
+            background: #55efc4;
+            border-color: #00b894;
+            animation: correctPulse 0.5s ease;
+        }
+
+        .quiz-option.wrong {
+            background: #ff7675;
+            border-color: #d63031;
+            animation: shake 0.5s ease;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .quiz-option.disabled {
+            pointer-events: none;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .feedback {
+            margin-top: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            min-height: 40px;
+        }
+
+        .feedback.wrong-answer {
+            color: #d63031;
+            animation: bounceIn 0.5s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .next-btn, .finish-btn {
+            margin-top: 25px;
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .next-btn.show, .finish-btn.show {
+            display: inline-block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .retry-hint {
+            margin-top: 15px;
+            color: #e74c3c;
+            font-size: 1em;
+            font-style: italic;
+            display: none;
+        }
+
+        .retry-hint.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .attempt-counter {
+            margin-top: 10px;
+            color: #ff6b6b;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: none;
+        }
+
+        .attempt-counter.show {
+            display: block;
+        }
+
+        /* Quiz Result Page */
+        .quiz-result-container {
+            text-align: center;
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 500px;
+        }
+
+        .quiz-result-container h2 {
+            color: #e74c3c;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .quiz-score {
+            font-size: 4em;
+            color: #ff6b6b;
+            margin: 20px 0;
+        }
+
+        .result-message {
+            font-size: 1.5em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        /* ========== VINTAGE LETTER STYLES ========== */
+        .vintage-letter-container {
+            position: relative;
+            max-width: 650px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        .vintage-paper {
+            background: #f4e4c1;
+            background: linear-gradient(135deg, #f4e4c1 0%, #e8d5a3 100%);
+            padding: 60px 50px;
+            border-radius: 5px;
+            box-shadow: 
+                0 10px 40px rgba(0,0,0,0.3),
+                inset 0 0 100px rgba(139, 69, 19, 0.1);
+            position: relative;
+            transform: rotate(-1deg);
+            border: 1px solid #d4c4a1;
+            
+            /* Aged paper texture effect */
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 28px,
+                    rgba(139, 69, 19, 0.05) 28px,
+                    rgba(139, 69, 19, 0.05) 29px
+                ),
+                linear-gradient(135deg, #f4e4c1 0%, #e8d5a3 100%);
+            line-height: 29px;
+        }
+
+        /* Coffee stains */
+        .vintage-paper::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            right: 60px;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(139, 69, 19, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+
+        .vintage-paper::after {
+            content: '';
+            position: absolute;
+            bottom: 80px;
+            left: 40px;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(139, 69, 19, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        /* Wax seal */
+        .wax-seal {
+            position: absolute;
+            bottom: -30px;
+            right: 50px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #c0392b, #a93226);
+            border-radius: 50%;
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.3),
+                inset 0 0 20px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: rgba(255,255,255,0.9);
+            transform: rotate(15deg);
+            z-index: 10;
+        }
+
+        .wax-seal::before {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+        }
+
+        /* Letter content */
+        .letter-date {
+            font-family: 'Caveat', cursive;
+            font-size: 1.3em;
+            color: #8b4513;
+            margin-bottom: 30px;
+            text-align: right;
+            opacity: 0.8;
+        }
+
+        .letter-salutation {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2em;
+            color: #6b3410;
+            margin-bottom: 20px;
+        }
+
+        .letter-body {
+            font-family: 'Caveat', cursive;
+            font-size: 1.6em;
+            color: #5c2e0e;
+            line-height: 1.8;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .letter-body p {
+            margin-bottom: 15px;
+            text-indent: 30px;
+        }
+
+        .letter-body p:first-child {
+            text-indent: 0;
+        }
+
+        .letter-ps {
+            font-family: 'Caveat', cursive;
+            font-size: 1.4em;
+            color: #8b4513;
+            margin-top: 20px;
+            font-style: italic;
+            border-top: 1px dashed #c4a77d;
+            padding-top: 15px;
+        }
+
+        .letter-signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2em;
+            color: #6b3410;
+            text-align: right;
+            margin-top: 40px;
+            margin-right: 20px;
+        }
+
+        .letter-signature::before {
+            content: 'Yours forever,';
+            display: block;
+            font-size: 0.6em;
+            font-family: 'Caveat', cursive;
+            color: #8b4513;
+            margin-bottom: 5px;
+        }
+
+        /* Folded corner effect */
+        .folded-corner {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, transparent 50%, #d4c4a1 50%);
+            border-radius: 0 0 5px 0;
+            box-shadow: -2px -2px 5px rgba(0,0,0,0.1);
+        }
+
+        .back-btn {
+            margin-top: 50px;
+            background: #8b4513;
+            color: #f4e4c1;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Caveat', cursive;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+            background: #6b3410;
+        }
+
+        /* Photo Page */
+        .photo-container {
+            text-align: center;
+        }
+
+        .photo-container h2 {
+            color: #e74c3c;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .photo-frame {
+            width: 350px;
+            height: 350px;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            margin: 0 auto;
+            position: relative;
+            transform: rotate(-3deg);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-frame:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 5em;
+            color: #e74c3c;
+        }
+
+        .photo-placeholder p {
+            font-size: 0.3em;
+            margin-top: 10px;
+            color: #666;
+        }
+
+        /* Floating hearts */
+        .floating-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: fixed;
+            font-size: 20px;
+            animation: float 10s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+         /* FLIP CARD STYLES */
+    .flip-card {
+        background-color: transparent;
+        width: 400px;
+        height: 500px;
+        perspective: 1000px;
+        cursor: pointer;
+    }
+
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .flip-card-front {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        border-radius: 20px;
+        box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+    }
+
+    .flip-card-back {
+        background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        border-radius: 20px;
+        box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        transform: rotateY(180deg);
+    }
+
+    .photo-label {
+        font-size: 1.8em;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        margin-bottom: 20px;
+        animation: bounce 2s ease infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+
+    .photo-frame-flip {
+        width: 300px;
+        height: 350px;
+        background: white;
+        border-radius: 15px;
+        padding: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        transform: rotate(-2deg);
+    }
+
+    .tap-hint {
+        margin-top: 20px;
+        color: #fff;
+        font-size: 1.1em;
+        opacity: 0.9;
+        animation: pulse 1.5s ease infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+    }
+
+    </style>
+</head>
+<body>
+    <!-- Floating hearts -->
+    <div class="floating-hearts" id="heartsContainer"></div>
+
+    <!-- Page 1: Envelope -->
+    <div class="envelope-page" id="envelopePage">
+        <div class="for-you">I Have Something For You ♥</div>
+        <div class="envelope-container" id="envelope" onclick="openEnvelope()">
+            <div class="envelope-flap"></div>
+            <div class="letter-preview">💌</div>
+            <div class="envelope-pocket"></div>
+        </div>
+        <div class="click-hint">Click the envelope to open 💝</div>
+    </div>
+
+    <!-- Page 2: Question -->
+    <div class="page" id="questionPage">
+        <div class="gif-container" id="gifContainer">
+            <div class="tenor-gif-embed" data-postid="24422070" data-share-method="host" data-aspect-ratio="0.921875" data-width="100%">
+                <a href="https://tenor.com/view/pompi-pet-dance-cute-dance-cutest-dance-ever-gif-24422070">Pompi Pet GIF</a>from 
+                <a href="https://tenor.com/search/pompi-gifs">Pompi GIFs</a>
+            </div>
+            <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+        </div>
+        <div class="main-text" id="mainText">Mr. Jat... Will You Be My Valentine?</div>
+        <div class="button-box">
+            <button id="yesBtn" onclick="sayYes()">YES! 💕</button>
+            <button id="noBtn" onclick="handleNo()">No 💔</button>
+        </div>
+    </div>
+
+    <!-- Page 3: Success -->
+    <div class="page" id="successPage">
+        <div class="gif-container">
+            <div class="tenor-gif-embed" data-postid="7688468466204916573" data-share-method="host" data-aspect-ratio="1.05882" data-width="100%">
+                <a href="https://tenor.com/view/bubu-dudu-sseeyall-gif-7688468466204916573">Bubu Dudu Sseeyall Sticker</a>from 
+                <a href="https://tenor.com/search/bubu+dudu-stickers">Bubu Dudu Stickers</a>
+            </div>
+            <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+        </div>
+        <div class="main-text">You made a great choice! 🎉</div>
+        <button class="gift-btn" onclick="showGifts()">🎁 See Your Gift!! 🎁</button>
+    </div>
+
+    <!-- Page 4: Gift Selection -->
+    <div class="page gift-selection" id="giftSelectionPage">
+        <h2>Choose Your Gift 💝</h2>
+        <div class="gifts-row">
+            <div class="gift-envelope" onclick="openGift(1)">
+                <div class="gift-env-flap"></div>
+                <div class="gift-env-body">
+                    <div class="gift-number">1</div>
+                </div>
+                <div class="gift-label"></div>
+            </div>
+            <div class="gift-envelope" onclick="openGift(2)">
+                <div class="gift-env-flap"></div>
+                <div class="gift-env-body">
+                    <div class="gift-number">2</div>
+                </div>
+                <div class="gift-label"></div>
+            </div>
+            <div class="gift-envelope" onclick="openGift(3)">
+                <div class="gift-env-flap"></div>
+                <div class="gift-env-body">
+                    <div class="gift-number">3</div>
+                </div>
+                <div class="gift-label"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 5: Quiz -->
+    <div class="page" id="quizPage">
+        <div class="quiz-container" id="quizContainer">
+            <div class="quiz-header">💝 Relationship Quiz</div>
+            <div class="quiz-progress">Question <span id="currentQ">1</span> of 8</div>
+            
+            <div class="question-box">
+                <div class="question-text" id="questionText"></div>
+                <div class="quiz-options" id="quizOptions"></div>
+            </div>
+            
+            <div class="feedback" id="feedback"></div>
+            <div class="retry-hint" id="retryHint">❌ Wrong! Try again until you get it right! 😈</div>
+            <div class="attempt-counter" id="attemptCounter">Attempt: <span id="attemptNum">1</span></div>
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
+            <button class="finish-btn" id="finishBtn" onclick="finishQuiz()">See Results 🎉</button>
+        </div>
+    </div>
+
+    <!-- Page 6: Quiz Result -->
+    <div class="page" id="quizResultPage">
+        <div class="quiz-result-container">
+            <h2>Quiz Complete! 🎊</h2>
+            <div class="quiz-score" id="scoreDisplay">8/8</div>
+            <div class="result-message" id="resultMessage"></div>
+            <button class="back-btn" onclick="backToGifts()" style="background: #ff6b6b; color: white; font-family: Georgia;">← Back to Gifts</button>
+        </div>
+    </div>
+
+    <!-- Page 7: VINTAGE LETTER - PERSONALIZED FOR LONG DISTANCE LOVE -->
+     <!-- Page 7: VINTAGE LETTER - YOUR PERFECT WORDS -->
+<div class="page" id="letterPage">
+    <div class="vintage-letter-container">
+        <div class="vintage-paper">
+            <div class="letter-date">February 14, 2025 💌</div>
+            
+            <div class="letter-salutation">My Gulaboo,</div>
+            
+            <div class="letter-body">
+                <p>Do you remember that first message on Facebook? "Hi." 📩 I ignored you. You tried again. And again. Then that message — <em>"Etna attitude kis baat ka?"</em> — and I finally smiled. 😏 Who knew that the chemical engineering boy who wouldn't give up would become my whole world? 🌍💕</p>
+                
+                <p>I think about those college days often. You waiting near my hostel 🏫, picking me up after exams, and us just roaming around with all the time in the world — listening to my senseless talk. 🗣️💫 I loved those days. I didn't know then that I was falling in love with a boy who would never give up on me.</p>
+                
+                <p>Those days in your apartment 🏠, when you decorated everything to welcome me, when you took care of me like a baby 👶 — they were the best days. I want a lifetime of that (no joking). I want to wake up and see your pink cheeks 🩷 (yes, that's why I call you Gulaboo, and no, I won't stop) every single morning.</p>
+                
+                <p>Do you still sleep with that frog? 🐸 The one I gave you — the one that reminds you of me? I know it sounds weird, but I love that you hold onto it when you miss me. I love that you have something to squeeze when I'm not there. Keep taking care of my frog until I can replace it. 🤗</p>
+                
+                <p>I still remember Delhi airport that first time. ✈️ You kept saying, <em>"You still have time, change your mind, don't go"</em> — and then you cried. 😢 My strong boyfee who never gave up on Facebook messages cried because I was leaving. I think that's when I knew for sure.</p>
+                
+                <p>Remember my college summer break in 2023... You tortured me every single day to book that flight! 😤 Every day — crying, silly ideas, listing the benefits of meeting you, anything to get me to book that flight. You planned my surprise birthday in Dubai 🎂🎉 even though it wasn't planned, and a little over budget, but you made it happen. You made me feel like the most special person in the world for those 10 days. 🌟 Do you know that's the best birthday I've ever had? No one will ever top that. Time really does fly when I'm with you — whoever said that was damn right!! ⏰💨</p>
+                
+                <p>People ask how we do this long-distance. They don't understand that at 2 AM when I can't sleep 🌙, you're the only voice I want to hear. When I get sick 🤒 — I want you around. When I miss home 🏡 — I like to fall asleep seeing your face. And when I'm scared 😰 — you know I can't leave you. Our FaceTime calls 📱 are my favorite part of the day. Seeing "Gulaboo calling" still makes my heart race. 💓</p>
+                
+                <p>I know you love me more. You've always been the one to say it first, show it bigger, feel it deeper. You proved it when you texted me three times despite my attitude. You proved it when you cried at Delhi airport. You proved it when you tortured me into that Dubai trip. You're still proving it every single day. 💪❤️</p>
+                
+                <p>I see how hard you work for us. The late nights 🌃, the extra efforts, the way you never complain because you're busy building the life we'll share. You think you love me more, and maybe you're right. But every morning I wake up and choose you. ☀️ Every night, I fall asleep with your voice in my ears. 🌙 Every single day, I'm working to close this distance between us.</p>
+                
+                <p>I cannot wait to marry you, Baby Girl. 💍👰‍♀️ I cannot wait to wake up next to you and never have to say goodbye at an airport again. I cannot wait to cook for you (and finally learn how to cook 👩‍🍳), to fall asleep on your pink cheeks, to plan trips and birthdays together instead of apart.</p>
+                
+                <p>Until then, keep that frog close. 🐸 I'm coming back for both of you. 🤍</p>
+            </div>
+            
+            <div class="letter-ps">P.S. I made you admit I'm the boss in that quiz, but we both know you've been the boss of my heart since that "attitude" message. 😏 Also, your pink cheeks are still my favorite thing to look at on FaceTime. 🩷📱</div>
+            
+            <div class="letter-signature">Your Future Wife<br>💋</div>
+            
+            <div class="folded-corner"></div>
+            
+            <div class="wax-seal">🐸</div> <!-- Changed to frog! -->
+        </div>
+    </div>
+    <button class="back-btn" onclick="backToGifts()">← Back to Gifts</button>
+</div>
+
+
+    <!-- Page 8: Photo -->
+  
+    <div class="page photo-container" id="photoPage">
+    <div class="flip-card" id="flipCard" onclick="flipCard()">
+        <div class="flip-card-inner">
+            <!-- FRONT: Your Photo -->
+            <div class="flip-card-front">
+                <div class="photo-label">Who is this cutieeeee??? 🤔</div>
+                <div class="photo-frame-flip">
+                    <div class="photo-placeholder">
+                        
+                        <div class="photo-placeholder" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">
+    <img src="C:\Users\User\OneDrive - Northeastern University\Desktop\valentines-quiz\assets\urvashi.jpeg" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
+</div>
+                        
+                    </div>
+                </div>
+                <div class="tap-hint">Tap to reveal! 👆</div>
+            </div>
+            
+            <!-- BACK: His Photo -->
+            <div class="flip-card-back">
+                <div class="photo-label">Ohhh My bad!! 😍</div>
+                <div class="photo-frame-flip">
+                    <div class="photo-placeholder" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">
+                                             <div class="photo-placeholder" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">
+    <img src="C:\Users\User\OneDrive - Northeastern University\Desktop\valentines-quiz\assets\Cutie.JPG" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
+</div>
+                    </div>
+                </div>
+                <div class="tap-hint">THE REAL CUTIE! 💕</div>
+            </div>
+        </div>
+    </div>
+    
+    <button class="back-btn" onclick="backToGifts()" style="background: #74b9ff; color: white; font-family: Georgia; margin-top: 40px;">← Back to Gifts</button>
+</div>
+
+    <script>
+        let noCount = 0;
+        let currentQuestion = 0;
+        let score = 0;
+        let hasAnsweredCorrectly = false;
+        let wrongAttempts = 0;
+
+        const noResponses = [
+            { postid: "8048699530525523871", text: "Think again 😭", aspect: "0.869565" },
+            { postid: "13529335641756488175", text: "Are you sure?", aspect: "1" },
+            { postid: "17923984087549620480", text: "You might regret this!! 😱", aspect: "0.965863" },
+            { postid: "13533818928773866271", text: "See this 😠", aspect: "1" }
+        ];
+
+        const escalatingFeedback = [
+            "❌ Wrong! Try again until you get it right! 😈",
+            "🤦‍♀️ You serious? That was obviously wrong!",
+            "😤 How can you make the same mistake twice?!",
+            "🙄 At this point I'm questioning your life choices...",
+            "💀 Bro... it's not that hard. Focus!",
+            "🤡 Clown behavior detected. Try again!",
+            "⏰ Taking too long! The right answer is waiting!",
+            "🎯 Hint: Pick the one that doesn't make me mad!"
+        ];
+
+        const quizQuestions = [
+            {
+                question: "Who's the absolute BOSS in this relationship?",
+                options: [
+                    { text: "Me (obviously) 😎", correct: true },
+                    { text: " Mr Jat (nice try 😏)", correct: false }
+                ],
+                wrongFeedback: "Nice try! But we both know I'm the boss here 😈",
+                correctFeedback: "Correct! I knew you'd agree 😉"
+            },
+            {
+                question: "Where do I plan to spend the rest of my life?",
+                options: [
+                    { text: "USA", correct: false },
+                    { text: "India", correct: false },
+                    { text: "In your arms 🤍", correct: true }
+                ],
+                wrongFeedback: "Wrong! Think with your heart, not your geography 📍❌",
+                correctFeedback: "Aww, you know me so well! 💕"
+            },
+            {
+                question: "Who acts tough but is actually a giant softie?",
+                options: [
+                    { text: "Me", correct: false },
+                    { text: "You (exposed 😌)", correct: true }
+                ],
+                wrongFeedback: "Really? You think I'm the softie? Try again! 😤",
+                correctFeedback: "Busted! You're a marshmallow 🍬"
+            },
+            {
+                question: "Who misses the other more?",
+                options: [
+                    { text: "Me", correct: false },
+                    { text: "You (don't lie)", correct: true }
+                ],
+                wrongFeedback: "Don't lie to yourself! You know it's you 😏",
+                correctFeedback: "Admit it, you miss me 24/7! 😘"
+            },
+            {
+                question: "Who's always right?",
+                options: [
+                    { text: "It's you URVASHI 👑", correct: true },
+                    { text: "You're always right URVASHI 😎", correct: true }
+                ],
+                wrongFeedback: "There's no wrong answer here, but pick one! 😄",
+                correctFeedback: "Either way, I'm right! 😄"
+            },
+            {
+                question: "Who's more romantic?",
+                options: [
+                    { text: "Me", correct: true },
+                    { text: "You (on special occasions 😄)", correct: false }
+                ],
+                wrongFeedback: "You? Romantic? Only when you remember! Try again! 💝",
+                correctFeedback: "I am the romance queen! 👑"
+            },
+            {
+                question: "Who plans better dates?",
+                options: [
+                    { text: "Me", correct: true },
+                    { text: "You", correct: false },
+                    { text: "Whoever planned this one (winner 🏆😉)", correct: true }
+                ],
+                wrongFeedback: "You think YOU plan better dates? Evidence suggests otherwise! 🧐",
+                correctFeedback: "This date is legendary! 🌟"
+            },
+            {
+                question: "Who is smiling right now?",
+                options: [
+                    { text: "You", correct: true },
+                    { text: "Still you", correct: true },
+                    { text: "If you say 'not me,' you're lying 😁", correct: true }
+                ],
+                wrongFeedback: "Impossible! I know you're smiling at this quiz! 😊",
+                correctFeedback: "I knew you were smiling! 😊"
+            }
+        ];
+
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            const hearts = ['❤️', '💕', '💖', '💗', '💝', '💘'];
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 5 + 8) + 's';
+                heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 10000);
+            }, 800);
+        }
+
+        function openEnvelope() {
+            document.getElementById('envelope').classList.add('open');
+            setTimeout(() => {
+                document.getElementById('envelopePage').style.display = 'none';
+                document.getElementById('questionPage').classList.add('show');
+            }, 800);
+        }
+
+        function handleNo() {
+            noCount++;
+            const responseIndex = (noCount - 1) % noResponses.length;
+            const response = noResponses[responseIndex];
+            
+            document.getElementById('gifContainer').innerHTML = `
+                <div class="tenor-gif-embed" data-postid="${response.postid}" data-share-method="host" data-aspect-ratio="${response.aspect}" data-width="100%">
+                    <a href="https://tenor.com/view/bubu-dudu-sseeyall-gif-${response.postid}">Bubu Dudu Sticker</a>
+                </div>
+                <script type="text/javascript" async src="https://tenor.com/embed.js"><\/script>
+            `;
+            
+            document.getElementById('mainText').innerText = response.text;
+            
+            const yesBtn = document.getElementById('yesBtn');
+            yesBtn.className = '';
+            setTimeout(() => yesBtn.classList.add('yes-size-' + Math.min(noCount, 7)), 10);
+            
+            if (noCount >= 7) {
+                document.getElementById('noBtn').style.display = 'none';
+                document.getElementById('mainText').innerText = "Only YES remains! 🎉";
+            }
+            
+            reloadTenor();
+        }
+
+        function sayYes() {
+            document.getElementById('questionPage').classList.remove('show');
+            document.getElementById('successPage').classList.add('show');
+            celebrate();
+        }
+
+        function celebrate() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.style.position = 'fixed';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.top = Math.random() * 100 + '%';
+                    heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                    heart.innerHTML = ['❤️', '💕', '💖', '🎉', '✨'][Math.floor(Math.random() * 5)];
+                    heart.style.animation = 'float 3s ease forwards';
+                    heart.style.zIndex = '9999';
+                    heart.style.pointerEvents = 'none';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 50);
+            } 
+        }
+
+        function showGifts() {
+            document.getElementById('successPage').classList.remove('show');
+            document.getElementById('giftSelectionPage').classList.add('show');
+        }
+
+        function openGift(giftNum) {
+            document.getElementById('giftSelectionPage').classList.remove('show');
+            if (giftNum === 1) {
+                startQuiz();
+            } else if (giftNum === 2) {
+                document.getElementById('letterPage').classList.add('show');
+            } else if (giftNum === 3) {
+                document.getElementById('photoPage').classList.add('show');
+            }
+        }
+
+        function startQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            hasAnsweredCorrectly = false;
+            wrongAttempts = 0;
+            document.getElementById('quizPage').classList.add('show');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            hasAnsweredCorrectly = false;
+            wrongAttempts = 0;
+            const q = quizQuestions[currentQuestion];
+            document.getElementById('currentQ').innerText = currentQuestion + 1;
+            document.getElementById('questionText').innerText = q.question;
+            
+            const optionsDiv = document.getElementById('quizOptions');
+            optionsDiv.innerHTML = '';
+            
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-option';
+                btn.innerText = opt.text;
+                btn.onclick = () => checkAnswer(btn, opt.correct, q);
+                optionsDiv.appendChild(btn);
+            });
+            
+            document.getElementById('feedback').innerText = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('retryHint').classList.remove('show');
+            document.getElementById('attemptCounter').classList.remove('show');
+            document.getElementById('nextBtn').classList.remove('show');
+            document.getElementById('finishBtn').classList.remove('show');
+        }
+
+        function checkAnswer(btn, isCorrect, questionData) {
+            const feedback = document.getElementById('feedback');
+            const retryHint = document.getElementById('retryHint');
+            const attemptCounter = document.getElementById('attemptCounter');
+            const attemptNum = document.getElementById('attemptNum');
+            
+            if (isCorrect) {
+                hasAnsweredCorrectly = true;
+                btn.classList.add('correct');
+                feedback.innerText = questionData.correctFeedback;
+                feedback.style.color = '#00b894';
+                feedback.className = 'feedback';
+                
+                const allBtns = document.querySelectorAll('.quiz-option');
+                allBtns.forEach(b => b.classList.add('disabled'));
+                
+                retryHint.classList.remove('show');
+                attemptCounter.classList.remove('show');
+                
+                if (currentQuestion < quizQuestions.length - 1) {
+                    document.getElementById('nextBtn').classList.add('show');
+                } else {
+                    document.getElementById('finishBtn').classList.add('show');
+                }
+                
+                score++;
+            } else {
+                wrongAttempts++;
+                btn.classList.add('wrong');
+                btn.classList.add('disabled');
+                
+                attemptCounter.classList.add('show');
+                attemptNum.innerText = wrongAttempts;
+                
+                let feedbackMsg;
+                if (wrongAttempts === 1) {
+                    feedbackMsg = questionData.wrongFeedback;
+                } else {
+                    const escalateIndex = (wrongAttempts - 2) % escalatingFeedback.length;
+                    feedbackMsg = escalatingFeedback[escalateIndex];
+                }
+                
+                feedback.innerText = feedbackMsg;
+                feedback.style.color = '#d63031';
+                feedback.className = 'feedback wrong-answer';
+                retryHint.classList.add('show');
+                
+                document.getElementById('quizContainer').style.animation = 'shake 0.5s ease';
+                setTimeout(() => {
+                    document.getElementById('quizContainer').style.animation = '';
+                }, 500);
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            showQuestion();
+        }
+
+        function finishQuiz() {
+            document.getElementById('quizPage').classList.remove('show');
+            document.getElementById('quizResultPage').classList.add('show');
+            document.getElementById('scoreDisplay').innerText = score + '/' + quizQuestions.length;
+            document.getElementById('resultMessage').innerHTML = 
+                "Yayyy!! You passed the test...<br>You really love me ❤️";
+        }
+
+        function backToGifts() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('show'));
+            document.getElementById('giftSelectionPage').classList.add('show');
+        }
+
+        function reloadTenor() {
+            const oldScript = document.querySelector('script[src="https://tenor.com/embed.js"]');
+            if (oldScript) oldScript.remove();
+            const newScript = document.createElement('script');
+            newScript.src = 'https://tenor.com/embed.js';
+            newScript.async = true;
+            document.body.appendChild(newScript);
+        }
+          function flipCard() {
+        document.getElementById('flipCard').classList.toggle('flipped');
+    }
+
+        createHearts();
+    </script>
+</body>
+</html>
